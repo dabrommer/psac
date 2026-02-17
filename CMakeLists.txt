@@ -33,6 +33,7 @@ add_library(psaclib INTERFACE)
 target_include_directories(psaclib INTERFACE include)
 
 ## psac dependencies
+include_directories(ext/)
 
 # load mxx and its gtest wrapper
 set(MXX_BUILD_TESTS OFF CACHE BOOL "disable building mxx tests" FORCE)
@@ -54,13 +55,11 @@ target_include_directories(psac-dss-lib INTERFACE ${libdivsufsort_BINARY_DIR}/in
 target_link_libraries(psac-dss-lib INTERFACE divsufsort divsufsort64)
 
 
-## build executables
-if(PSAC_BUILD_EXES)
-  add_subdirectory(src)
-endif()
+
+add_subdirectory(src)
+
 
 # build tests
 if (PSAC_BUILD_TESTS)
   add_subdirectory(test)
 endif()
-
