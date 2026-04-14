@@ -363,7 +363,14 @@ void construct_ss(simple_dstringset& ss, const alphabet_type& alpha) {
 }
 
 template <typename Iterator>
-void construct(Iterator begin, Iterator end, bool fast_resolval, const alphabet_type& alpha, unsigned int k) {
+void construct(Iterator begin, Iterator end, bool fast_resolval, const alphabet_type& alpha, unsigned int k, std::size_t resolval_threshold = 0) {
+    if (resolval_threshold == 0) {
+        // Previous psac default
+        resolval_threshold = n/10;
+    }
+    else {
+        resolval_threshold = std::ceil(resolval_threshold * n);
+    }
     SAC_TIMER_START();
     // create initial k-mers and use these as the initial bucket numbers
     // for each character position
@@ -421,7 +428,7 @@ void construct(Iterator begin, Iterator end, bool fast_resolval, const alphabet_
          *  SA->ISA  *
          *************/
         // by bucketing to correct target processor using the `SA` array
-        if (fast_resolval && unfinished_elements < n/10) {
+        if (fast_resolval && unfinished_elements < resolval_threshold) {
             // prepare for bucket chaising (needs SA, and bucket arrays in both
             // SA and ISA order)
             std::vector<index_t> cpy_SA(local_SA);
@@ -467,7 +474,7 @@ void construct(Iterator begin, Iterator end, bool fast_resolval, const alphabet_
 
 
 template <typename Iterator>
-void construct(Iterator begin, Iterator end, bool fast_resolval = true, unsigned int k = 0) {
+void construct(Iterator begin, Iterator end, bool fast_resolval = true, unsigned int k = 0, std::size_t resolval_threshold = 0) {
 
     SAC_TIMER_START();
 
@@ -481,8 +488,7 @@ void construct(Iterator begin, Iterator end, bool fast_resolval = true, unsigned
         INFO("Alphabet: " << alpha);
     }
     SAC_TIMER_END_SECTION("get alphabet");
-
-    construct(begin, end, fast_resolval, alpha, k);
+    construct(begin, end, fast_resolval, alpha, k, resolval_threshold);
 }
 
 // generalized to more than "doubling" (e.g. prefix-trippling with L=3)

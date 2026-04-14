@@ -29,7 +29,7 @@ struct sa_builder {
 public:
     sa_builder() = default;
 
-    void construct_sa_lcp(const MPI_Comm &mpi_com, std::string &local_str) {
+    void construct_sa_lcp(const MPI_Comm &mpi_com, std::string &local_str, std::size_t resolval_threshold) {
 
         mxx::comm comm = mxx::comm(mpi_com);
         mxx::print_node_distribution(comm);
@@ -39,7 +39,7 @@ public:
 
         // construct SA+LCP
         suffix_array<char, index_t, true> sa(comm);
-        sa.construct(local_str.begin(), local_str.end(), true);
+        sa.construct(local_str.begin(), local_str.end(), true, resolval_threshold);
         double end = t.elapsed() - start;
         if (comm.rank() == 0)
             std::cerr << "PSAC time: " << end << " ms" << std::endl;
