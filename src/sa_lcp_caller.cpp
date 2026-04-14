@@ -39,7 +39,7 @@ public:
 
         // construct SA+LCP
         suffix_array<char, index_t, true> sa(comm);
-        sa.construct(local_str.begin(), local_str.end(), true, resolval_threshold);
+        sa.construct(local_str.begin(), local_str.end(), resolval_threshold);
         double end = t.elapsed() - start;
         if (comm.rank() == 0)
             std::cerr << "PSAC time: " << end << " ms" << std::endl;

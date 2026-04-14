@@ -472,6 +472,11 @@ void construct(Iterator begin, Iterator end, bool fast_resolval, const alphabet_
     SAC_TIMER_END_SECTION("fix-isa");
 }
 
+template <typename Iterator>
+void construct(Iterator begin, Iterator end, std::size_t resolval_threshold) {
+    construct(begin, end, true, 0, resolval_threshold);
+}
+
 
 template <typename Iterator>
 void construct(Iterator begin, Iterator end, bool fast_resolval = true, unsigned int k = 0, std::size_t resolval_threshold = 0) {
