@@ -1,10 +1,8 @@
 project(psac-src)
 
-# for tclap command line parsing header library
-include_directories(../ext/)
-
-add_library(sa_lcp_caller_lib sa_lcp_caller.cpp)
-target_link_libraries(sa_lcp_caller_lib psac-dss-lib)
+add_library(psac_lib INTERFACE)
+target_link_libraries(psac_lib INTERFACE psac-dss-lib)
+add_library(psac::psac ALIAS psac_lib)
 
 ######################
 #  main executables  #

@@ -58,6 +58,9 @@ target_link_libraries(psac-dss-lib INTERFACE divsufsort divsufsort64)
 
 add_subdirectory(src)
 
+target_include_directories(psac_lib INTERFACE
+  "${CMAKE_CURRENT_SOURCE_DIR}/include")
+
 
 # build tests
 if (PSAC_BUILD_TESTS)
